@@ -1,0 +1,8 @@
+multiflexi-zabbix-selenium (1.0.0) unstable; urgency=medium
+
+  * Initial release
+  * Zabbix agent2 integration for Mocha test results
+  * systemd timer for periodic test execution
+  * Zabbix template with triggers
+
+ -- Vítězslav Dvořák <info@vitexsoftware.cz>  Mon, 27 Jan 2026 18:00:00 +0100

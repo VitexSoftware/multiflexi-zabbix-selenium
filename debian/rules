@@ -1,0 +1,12 @@
+#!/usr/bin/make -f
+
+%:
+	dh $@
+
+override_dh_auto_install:
+	dh_auto_install
+	# Create directories
+	mkdir -p debian/multiflexi-zabbix-selenium/var/lib/zabbix/mocha
+	mkdir -p debian/multiflexi-zabbix-selenium/usr/share/zabbix/templates
+	# Set permissions for Zabbix report directory
+	chmod 755 debian/multiflexi-zabbix-selenium/var/lib/zabbix/mocha

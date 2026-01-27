@@ -1,0 +1,5 @@
+zabbix-mocha-stats.sh usr/bin/
+mocha.conf etc/zabbix/zabbix_agent2.d/
+mocha-selenium-tests.service etc/systemd/system/
+mocha-selenium-tests.timer etc/systemd/system/
+zabbix-template-mocha.yaml usr/share/zabbix/templates/

@@ -1,0 +1,22 @@
+#!/bin/sh
+set -e
+
+case "$1" in
+    configure)
+        # Ensure zabbix user can write to report directory
+        chown zabbix:zabbix /var/lib/zabbix/mocha || true
+        
+        # Reload systemd
+        systemctl daemon-reload || true
+        
+        # Restart zabbix-agent2 to load new UserParameters
+        systemctl try-restart zabbix-agent2 || true
+        
+        echo "To enable automated test execution, run:"
+        echo "  systemctl enable --now mocha-selenium-tests.timer"
+        ;;
+esac
+
+#DEBHELPER#
+
+exit 0

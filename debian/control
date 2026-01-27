@@ -1,0 +1,29 @@
+Source: multiflexi-zabbix-selenium
+Section: admin
+Priority: optional
+Maintainer: Vítězslav Dvořák <info@vitexsoftware.cz>
+Build-Depends: debhelper-compat (= 13)
+Standards-Version: 4.6.2
+Homepage: https://github.com/VitexSoftware/multiflexi-zabbix-selenium
+Rules-Requires-Root: no
+
+Package: multiflexi-zabbix-selenium
+Architecture: all
+Depends: ${misc:Depends},
+ zabbix-agent2,
+ node-mochawesome,
+ mocha,
+ jq
+Recommends: chromium-driver | gecko-driver
+Description: Zabbix integration for Selenium test monitoring via Mocha
+ Provides a complete integration between Mocha test framework and Zabbix
+ monitoring system. Tests are executed periodically via systemd timer and
+ results are exposed to Zabbix through custom UserParameters.
+ .
+ Features:
+  - Zabbix agent2 UserParameter for reading Mocha JSON reports
+  - systemd service and timer for automated test execution
+  - Pre-configured Zabbix template for test monitoring
+  - Triggers for test failures and stale results
+ .
+ This package does not require Zabbix to run browsers or tests directly.

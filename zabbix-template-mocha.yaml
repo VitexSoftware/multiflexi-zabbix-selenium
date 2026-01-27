@@ -1,0 +1,138 @@
+zabbix_export:
+  version: '6.0'
+  date: '2026-01-27T17:00:00Z'
+  groups:
+    - uuid: 7df96b18c230490a9a0a9e2307226338
+      name: 'Templates/Applications'
+  templates:
+    - uuid: 8f7d4e9c3a1b4d2e8f9c0a1b2c3d4e5f
+      template: 'Template Mocha Selenium Tests'
+      name: 'Template Mocha Selenium Tests'
+      description: |
+        Monitors Mocha test results via mochawesome JSON reports.
+        Tests are executed externally via systemd timer.
+        
+        Requirements:
+        - multiflexi-zabbix-selenium package installed
+        - Tests configured and timer enabled
+      groups:
+        - name: 'Templates/Applications'
+      items:
+        - uuid: 1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d
+          name: 'Mocha: Total tests'
+          type: ZABBIX_ACTIVE
+          key: mocha.tests[total]
+          delay: 5m
+          history: 7d
+          trends: 90d
+          description: 'Total number of tests in last run'
+          tags:
+            - tag: Application
+              value: 'Mocha Tests'
+        
+        - uuid: 2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e
+          name: 'Mocha: Passed tests'
+          type: ZABBIX_ACTIVE
+          key: mocha.tests[passed]
+          delay: 5m
+          history: 7d
+          trends: 90d
+          description: 'Number of passed tests'
+          tags:
+            - tag: Application
+              value: 'Mocha Tests'
+        
+        - uuid: 3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f
+          name: 'Mocha: Failed tests'
+          type: ZABBIX_ACTIVE
+          key: mocha.tests[failed]
+          delay: 5m
+          history: 7d
+          trends: 90d
+          description: 'Number of failed tests'
+          tags:
+            - tag: Application
+              value: 'Mocha Tests'
+          triggers:
+            - uuid: 4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a
+              expression: 'last(/Template Mocha Selenium Tests/mocha.tests[failed])>0'
+              name: 'Mocha: Tests are failing'
+              priority: WARNING
+              description: 'One or more Selenium tests have failed'
+        
+        - uuid: 4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a
+          name: 'Mocha: Pending tests'
+          type: ZABBIX_ACTIVE
+          key: mocha.tests[pending]
+          delay: 5m
+          history: 7d
+          trends: 90d
+          description: 'Number of skipped/pending tests'
+          tags:
+            - tag: Application
+              value: 'Mocha Tests'
+        
+        - uuid: 5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b
+          name: 'Mocha: Test duration'
+          type: ZABBIX_ACTIVE
+          key: mocha.tests[duration]
+          delay: 5m
+          history: 7d
+          trends: 90d
+          units: ms
+          description: 'Total test execution time in milliseconds'
+          tags:
+            - tag: Application
+              value: 'Mocha Tests'
+        
+        - uuid: 6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c
+          name: 'Mocha: Report age'
+          type: ZABBIX_ACTIVE
+          key: mocha.tests[age]
+          delay: 1m
+          history: 7d
+          trends: 90d
+          units: unixtime
+          description: 'Timestamp of last test report'
+          tags:
+            - tag: Application
+              value: 'Mocha Tests'
+          triggers:
+            - uuid: 7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d
+              expression: 'now()-last(/Template Mocha Selenium Tests/mocha.tests[age])>3600'
+              name: 'Mocha: Test results are outdated'
+              priority: AVERAGE
+              description: 'No fresh test results in the last hour. Check if systemd timer is running.'
+            
+            - uuid: 8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e
+              expression: 'now()-last(/Template Mocha Selenium Tests/mocha.tests[age])>7200'
+              name: 'Mocha: Test results are critically outdated'
+              priority: HIGH
+              description: 'No fresh test results in the last 2 hours. Test execution may be broken.'
+        
+        - uuid: 9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f
+          name: 'Mocha: Success rate'
+          type: CALCULATED
+          key: mocha.success_rate
+          delay: 5m
+          history: 7d
+          trends: 90d
+          value_type: FLOAT
+          units: '%'
+          params: '100*last(//mocha.tests[passed])/last(//mocha.tests[total])'
+          description: 'Percentage of passed tests'
+          tags:
+            - tag: Application
+              value: 'Mocha Tests'
+          triggers:
+            - uuid: a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5
+              expression: 'last(/Template Mocha Selenium Tests/mocha.success_rate)<90'
+              name: 'Mocha: Success rate below 90%'
+              priority: HIGH
+              description: 'Test success rate has dropped below 90%'
+            
+            - uuid: b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6
+              expression: 'last(/Template Mocha Selenium Tests/mocha.success_rate)<50'
+              name: 'Mocha: Success rate critically low'
+              priority: DISASTER
+              description: 'More than half of the tests are failing'

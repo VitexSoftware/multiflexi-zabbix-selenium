@@ -1,0 +1,31 @@
+# Debian build artifacts
+debian/.debhelper/
+debian/debhelper-build-stamp
+debian/files
+debian/*.substvars
+debian/*.debhelper.log
+debian/multiflexi-zabbix-selenium/
+
+# Package files
+../*.deb
+../*.build
+../*.buildinfo
+../*.changes
+../*.dsc
+../*.tar.xz
+
+# Test reports
+report/
+test-results*.json
+.timestamp
+
+# Editor files
+*~
+*.swp
+*.swo
+.vscode/
+.idea/
+
+# Node modules (if tests are included)
+node_modules/
+package-lock.json

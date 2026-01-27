@@ -1,0 +1,32 @@
+[Unit]
+Description=Mocha Selenium Tests for Zabbix Monitoring
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+User=zabbix
+WorkingDirectory=/home/vitex/Projects/Multi/multiflexi-zabbix-selenium
+Environment=NODE_ENV=production
+Environment=HOME=/var/lib/zabbix
+
+# Execute tests with atomic result file writing
+ExecStartPre=/bin/bash -c 'TIMESTAMP=$(date +%%s); echo "$TIMESTAMP" > /var/lib/zabbix/mocha/.timestamp'
+ExecStart=/bin/bash -c 'TIMESTAMP=$(cat /var/lib/zabbix/mocha/.timestamp); /usr/bin/mocha test/*.spec.js --reporter mochawesome --reporter-options reportDir=/var/lib/zabbix/mocha,reportFilename=test-results-$TIMESTAMP,json=true,html=false'
+ExecStartPost=/bin/bash -c 'TIMESTAMP=$(cat /var/lib/zabbix/mocha/.timestamp); ln -sf test-results-$TIMESTAMP.json /var/lib/zabbix/mocha/test-results.json'
+
+# Cleanup old reports (keep last 7 days)
+ExecStartPost=/usr/bin/find /var/lib/zabbix/mocha -name 'test-results-*.json' -mtime +7 -delete
+
+StandardOutput=journal
+StandardError=journal
+MemoryMax=2G
+TimeoutSec=300
+KillMode=mixed
+
+# Restart on failure with backoff
+Restart=on-failure
+RestartSec=60
+
+[Install]
+WantedBy=multi-user.target
