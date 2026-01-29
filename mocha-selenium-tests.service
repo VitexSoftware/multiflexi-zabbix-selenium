@@ -12,7 +12,7 @@ Environment=HOME=/var/lib/zabbix
 
 # Execute tests with atomic result file writing
 ExecStartPre=/bin/bash -c 'TIMESTAMP=$(date +%%s); echo "$TIMESTAMP" > /var/lib/zabbix/mocha/.timestamp'
-ExecStart=/bin/bash -c 'TIMESTAMP=$(cat /var/lib/zabbix/mocha/.timestamp); /usr/bin/mocha test/*.spec.js --reporter mochawesome --reporter-options reportDir=/var/lib/zabbix/mocha,reportFilename=test-results-$TIMESTAMP,json=true,html=false'
+ExecStart=/bin/bash -c 'TIMESTAMP=$(cat /var/lib/zabbix/mocha/.timestamp); /usr/bin/mocha test/*.spec.js --reporter /usr/lib/nodejs/mochawesome/dist/mochawesome.js --reporter-options reportDir=/var/lib/zabbix/mocha,reportFilename=test-results-$TIMESTAMP,json=true,html=false'
 ExecStartPost=/bin/bash -c 'TIMESTAMP=$(cat /var/lib/zabbix/mocha/.timestamp); ln -sf test-results-$TIMESTAMP.json /var/lib/zabbix/mocha/test-results.json'
 
 # Cleanup old reports (keep last 7 days)
