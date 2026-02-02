@@ -1,0 +1,4 @@
+# Default configuration for multiflexi-mocha service
+# Set the directory containing your Mocha *.spec.js tests
+# Override this file to point to your actual test location
+TESTS_DIR=/usr/share/multiflexi-zabbix-selenium/tests

@@ -28,6 +28,16 @@ sudo systemctl enable --now mocha-selenium-tests.timer
 systemctl status mocha-selenium-tests.timer
 ```
 
+### Configure Test Location
+
+Set where your Mocha `*.spec.js` tests live. Edit `/etc/default/multiflexi-mocha` and set `TESTS_DIR`:
+
+```bash
+sudo sed -i 's#^TESTS_DIR=.*#TESTS_DIR=/path/to/your/tests#' /etc/default/multiflexi-mocha
+sudo systemctl daemon-reload
+sudo systemctl restart mocha-selenium-tests.timer
+```
+
 ### Configure Zabbix
 
 1. Import template: `/usr/share/zabbix/templates/zabbix-template-mocha.yaml`
@@ -41,10 +51,11 @@ systemctl status mocha-selenium-tests.timer
 zabbix_agent2 -t mocha.tests[total]
 zabbix_agent2 -t mocha.tests[failed]
 
-# Run tests manually
-sudo -u zabbix /usr/bin/mocha test/*.spec.js \
-  --reporter mochawesome \
-  --reporter-options reportDir=/var/lib/zabbix/mocha,reportFilename=test-results,json=true,html=false
+# Run tests manually via service
+sudo systemctl start mocha-selenium-tests.service
+
+# Or run script directly (override TESTS_DIR as needed)
+sudo -u zabbix TESTS_DIR=/path/to/your/tests /usr/bin/multiflexi-mocha-test.sh
 
 # Check report
 cat /var/lib/zabbix/mocha/test-results.json | jq .stats
@@ -86,11 +97,10 @@ sudo systemctl restart mocha-selenium-tests.timer
 ```
 
 ### Custom Test Directory
+Edit `/etc/default/multiflexi-mocha` and set:
 
-Edit `/etc/systemd/system/mocha-selenium-tests.service`:
-
-```ini
-WorkingDirectory=/path/to/your/tests
+```bash
+TESTS_DIR=/path/to/your/tests
 ```
 
 ## Troubleshooting
@@ -128,7 +138,9 @@ systemctl start mocha-selenium-tests.timer
 ## Files
 
 - `/usr/bin/zabbix-mocha-stats.sh` - Metrics extraction script
+- `/usr/bin/multiflexi-mocha-test.sh` - Test runner used by the service
 - `/etc/zabbix/zabbix_agent2.d/mocha.conf` - Zabbix UserParameters
+- `/etc/default/multiflexi-mocha` - Environment file (e.g., `TESTS_DIR`)
 - `/etc/systemd/system/mocha-selenium-tests.service` - Test execution service
 - `/etc/systemd/system/mocha-selenium-tests.timer` - Periodic execution timer
 - `/usr/share/zabbix/templates/zabbix-template-mocha.yaml` - Zabbix template

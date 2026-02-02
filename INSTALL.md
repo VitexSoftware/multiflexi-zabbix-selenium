@@ -19,9 +19,11 @@ sudo apt-get install -f
 - `/etc/zabbix/zabbix_agent2.d/mocha.conf` - Zabbix UserParameters
 - `/etc/systemd/system/mocha-selenium-tests.service` - Test execution service
 - `/etc/systemd/system/mocha-selenium-tests.timer` - Periodic timer
+- `/etc/default/multiflexi-mocha` - Environment (e.g., `TESTS_DIR`)
 
 ### Executables
 - `/usr/bin/zabbix-mocha-stats.sh` - Metrics extraction script
+- `/usr/bin/multiflexi-mocha-test.sh` - Test runner invoked by the service
 
 ### Templates
 - `/usr/share/zabbix/templates/zabbix-template-mocha.yaml` - Zabbix template
@@ -33,10 +35,10 @@ sudo apt-get install -f
 
 ### 1. Configure Test Directory
 
-Edit `/etc/systemd/system/mocha-selenium-tests.service` and update:
+Set `TESTS_DIR` in `/etc/default/multiflexi-mocha`:
 
-```ini
-WorkingDirectory=/path/to/your/tests
+```bash
+sudo sed -i 's#^TESTS_DIR=.*#TESTS_DIR=/path/to/your/tests#' /etc/default/multiflexi-mocha
 ```
 
 ### 2. Enable Timer
@@ -77,10 +79,13 @@ You can test the components without installing:
 # Test the extraction script
 ./zabbix-mocha-stats.sh total
 
-# Run tests with mochawesome
+# Run tests with mochawesome (local)
 mocha test/*.spec.js \
   --reporter mochawesome \
   --reporter-options reportDir=./report,reportFilename=test-results,json=true,html=false
+
+# Or invoke the packaged runner script with custom TESTS_DIR
+TESTS_DIR=$PWD/test ./multiflexi-mocha-test.sh
 
 # Extract metrics from report
 REPORT=./report/test-results.json

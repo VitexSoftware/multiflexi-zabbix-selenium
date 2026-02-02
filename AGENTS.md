@@ -20,11 +20,13 @@ systemd timer → Mocha tests → mochawesome JSON report → Zabbix UserParamet
 
 2. **mocha.conf**: Zabbix agent2 UserParameter configuration that maps `mocha.tests[*]` keys to the extraction script.
 
-3. **mocha-selenium-tests.service**: systemd oneshot service running as `zabbix` user. Uses atomic writes (timestamped files + symlink) to prevent race conditions.
+3. **multiflexi-mocha-test.sh**: Test runner script invoked by the systemd service. Honors `TESTS_DIR` to locate tests.
 
-4. **mocha-selenium-tests.timer**: Triggers service every 15 minutes with `OnUnitActiveSec`.
+4. **mocha-selenium-tests.service**: systemd oneshot service running as `zabbix` user. Uses atomic writes (timestamped files + symlink) to prevent race conditions.
 
-5. **zabbix-template-mocha.yaml**: Zabbix 6.0+ template with items (total/passed/failed/pending/duration/age), calculated item (success_rate), and triggers.
+5. **mocha-selenium-tests.timer**: Triggers service every 15 minutes with `OnUnitActiveSec`.
+
+6. **zabbix-template-mocha.yaml**: Zabbix 6.0+ template with items (total/passed/failed/pending/duration/age), calculated item (success_rate), and triggers.
 
 ### Data Flow Details
 
@@ -90,10 +92,8 @@ The service uses a three-step atomic write to prevent Zabbix reading partial/cor
 2. Create/update symlink: `test-results.json → test-results-1234567890.json`
 3. Zabbix always reads the symlink (atomic operation)
 
-### WorkingDirectory Configuration
-The systemd service's `WorkingDirectory` is hardcoded to the development path. When packaging for different deployments:
-- This MUST be updated to point to the actual test location
-- Or tests should be placed in a standard location like `/usr/share/multiflexi-zabbix-selenium/tests`
+### Test Directory Configuration
+The systemd service no longer uses a hardcoded `WorkingDirectory`. Instead, set the `TESTS_DIR` variable in `/etc/default/multiflexi-mocha` to point to your test location. The runner script `multiflexi-mocha-test.sh` reads this value and executes `mocha "$TESTS_DIR"/*.spec.js`.
 
 ### Permission Model
 - Service runs as `zabbix` user (not root)
@@ -107,6 +107,8 @@ The systemd service's `WorkingDirectory` is hardcoded to the development path. W
 - Root-level files → installed to system paths
 - No build step—files copied as-is
 - Scripts must be executable in source tree (chmod +x)
+  - Includes `/usr/bin/multiflexi-mocha-test.sh`
+  - Installs default env file to `/etc/default/multiflexi-mocha`
 
 ### Post-Installation Hooks
 - `debian/postinst`: Sets directory ownership, reloads systemd, restarts zabbix-agent2
@@ -143,7 +145,7 @@ The extraction script is tightly coupled to mochawesome's JSON structure (`.stat
 
 3. **Forgetting chmod +x**: Source files must be executable before packaging. dpkg-buildpackage doesn't set this automatically.
 
-4. **Timer depends on WorkingDirectory**: If tests aren't at the hardcoded path, service will fail silently. Always check `journalctl` after enabling timer.
+4. **TESTS_DIR unset or wrong**: If `TESTS_DIR` is not set correctly in `/etc/default/multiflexi-mocha`, the service may not find tests. Always check `journalctl` after enabling the timer.
 
 5. **Race conditions in parallel test runs**: The atomic write pattern prevents this, but if you modify the service to run tests in parallel (don't), you'll need per-instance report files.
 
