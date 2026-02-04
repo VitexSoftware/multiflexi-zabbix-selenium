@@ -15,7 +15,7 @@ describe('dashboard', function() {
   })
   it('dashboard', async function() {
     // Login first
-    await driver.get("http://localhost/multiflexi/logout.php")
+    await driver.get("https://vyvojar.spoje.net/multiflexi/logout.php")
     await driver.manage().window().maximize()
     
     // Handle GDPR consent banner using reusable function
@@ -32,7 +32,7 @@ describe('dashboard', function() {
     await driver.sleep(1000)
     
     // Now test logs dashboard - navigate directly to dashboard
-    await driver.get("http://localhost/multiflexi/dashboard.php")
+    await driver.get("https://vyvojar.spoje.net/multiflexi/dashboard.php")
     await driver.manage().window().setRect(1920, 1032)
     await driver.sleep(1000)
     

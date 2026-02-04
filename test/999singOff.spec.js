@@ -6,7 +6,7 @@ const { Builder, By, Key, until } = require('selenium-webdriver');
   try {
     driver = await new Builder().forBrowser('chrome').build();
     // First, login with credentials from createFirstAdminAcc
-    await driver.get("http://localhost/multiflexi/logout.php");
+    await driver.get("https://vyvojar.spoje.net/multiflexi/logout.php");
     // Set window to maximum available screen resolution
     const {width, height} = await driver.executeScript(() => ({ width: window.screen.width, height: window.screen.height }));
     await driver.manage().window().setRect(0, 0, width, height);

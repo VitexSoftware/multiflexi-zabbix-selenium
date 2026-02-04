@@ -15,7 +15,7 @@ describe('intervals', function() {
   })
   it('intervals', async function() {
     // Login first
-    await driver.get("http://localhost/multiflexi/logout.php")
+    await driver.get("https://vyvojar.spoje.net/multiflexi/logout.php")
     await driver.manage().window().maximize()
     
     // Handle GDPR consent banner using reusable function
@@ -31,7 +31,7 @@ describe('intervals', function() {
     await driver.sleep(1000)
     
     // Now test intervals
-    await driver.get("http://localhost/multiflexi/main.php")
+    await driver.get("https://vyvojar.spoje.net/multiflexi/main.php")
     await driver.findElement(By.id("imgwidth30srcimagessystem-userssvgAdmin")).click()
     await driver.findElement(By.linkText("♻️ Intervals")).click()
     await driver.findElement(By.id("applyintervalsettingsbutton")).click()

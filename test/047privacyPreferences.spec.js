@@ -15,7 +15,7 @@ describe('privacyPreferences', function() {
   })
   it('privacyPreferences', async function() {
     // Login first
-    await driver.get("http://localhost/multiflexi/logout.php")
+    await driver.get("https://vyvojar.spoje.net/multiflexi/logout.php")
     await driver.manage().window().maximize()
     
     // Handle GDPR consent banner using reusable function
@@ -32,7 +32,7 @@ describe('privacyPreferences', function() {
     await driver.sleep(1000)
     
     // Now test privacy preferences
-    await driver.get("http://localhost/multiflexi/main.php")
+    await driver.get("https://vyvojar.spoje.net/multiflexi/main.php")
     {
       const element = await driver.findElement(By.css(".card:nth-child(14) .card-img-top"))
       await driver.actions({ bridge: true }).moveToElement(element).perform()

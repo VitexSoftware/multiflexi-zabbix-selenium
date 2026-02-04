@@ -15,7 +15,7 @@ describe('credentialTypeHelpers', function() {
   })
   it('credentialTypeHelpers', async function() {
     // Login first
-    await driver.get("http://localhost/multiflexi/logout.php")
+    await driver.get("https://vyvojar.spoje.net/multiflexi/logout.php")
     await driver.manage().window().maximize()
     
     // Handle GDPR consent banner using reusable function
@@ -32,7 +32,7 @@ describe('credentialTypeHelpers', function() {
     await driver.sleep(1000)
     
     // Now test credential type helpers
-    await driver.get("http://localhost/multiflexi/main.php")
+    await driver.get("https://vyvojar.spoje.net/multiflexi/main.php")
     await driver.findElement(By.id("imgwidth30srcimagessystem-userssvgAdmin")).click()
     await driver.findElement(By.linkText("🔐 Credential Type helpers")).click()
   })

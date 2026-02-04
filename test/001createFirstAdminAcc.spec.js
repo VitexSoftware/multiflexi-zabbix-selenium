@@ -1,6 +1,7 @@
 // Refactored for Mocha
 const { Builder, By, Key, until } = require('selenium-webdriver');
 const assert = require('assert');
+const { createDriver } = require('./driver.js');
 
 describe('Create First Admin Account', function() {
     // afterEach block removed; let Mocha handle exit codes
@@ -8,12 +9,7 @@ describe('Create First Admin Account', function() {
   let driver;
 
   before(async () => {
-    const chrome = require('selenium-webdriver/chrome');
-    const options = new chrome.Options();
-    options.addArguments('--disable-gcm-registration'); // Suppress GCM errors
-    options.addArguments('--disable-logging'); // Suppress logging
-    options.addArguments('--log-level=3'); // Only fatal errors
-    driver = await new Builder().forBrowser('chrome').setChromeOptions(options).build();
+    driver = await createDriver();
   });
 
   after(async () => {
@@ -21,7 +17,7 @@ describe('Create First Admin Account', function() {
   });
 
   it('should create a new admin account and accept all cookies', async () => {
-    await driver.get("http://localhost/multiflexi/logout.php");
+    await driver.get("https://vyvojar.spoje.net/multiflexi/logout.php");
     const {width, height} = await driver.executeScript(() => ({ width: window.screen.width, height: window.screen.height }));
     await driver.manage().window().setRect(0, 0, width, height);
 
@@ -104,20 +100,23 @@ describe('Create First Admin Account', function() {
         }
       }
     }
+    // Ensure username and first name are the same
     const adminName = 'admin_' + randomString(6);
     const strongPassword = randomStrongPassword(16);
     const fs = require('fs');
     const path = require('path');
-    const tmpDir = process.env.TEMP || process.env.TMP || 'C:\\tmp';
+    const tmpDir = process.env.TEMP || process.env.TMP || '/tmp';
     const credsPath = path.join(tmpDir, 'multiflexi_admin_credentials.json');
+    // Log file creation for debugging
+    console.log(`Writing credentials to: ${credsPath}`);
     fs.writeFileSync(credsPath, JSON.stringify({ username: adminName, password: strongPassword }), 'utf8');
+    console.log(`Credentials written successfully: ${JSON.stringify({ username: adminName, password: strongPassword })}`);
 
     await driver.findElement(By.id("Firstname")).click();
     await clickIfExists(By.id("consent-accept-all"));
     await driver.findElement(By.id("Firstname")).sendKeys(adminName);
     await clickIfExists(By.id("consent-accept-all"));
     await driver.findElement(By.id("Username")).click();
-    await driver.findElement(By.id("Username")).sendKeys("    admin_" + randomString(6));
     await driver.findElement(By.id("Username")).sendKeys(adminName);
     await driver.findElement(By.id("Password")).click();
     await clickIfExists(By.id("consent-accept-all"));

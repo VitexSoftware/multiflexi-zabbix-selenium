@@ -15,7 +15,7 @@ describe('deshbordViewCompanies', function() {
   })
   it('deshbordViewCompanies', async function() {
     // Login first
-    await driver.get("http://localhost/multiflexi/logout.php")
+    await driver.get("https://vyvojar.spoje.net/multiflexi/logout.php")
     await driver.manage().window().maximize()
     
     // Handle GDPR consent banner using reusable function
@@ -31,7 +31,7 @@ describe('deshbordViewCompanies', function() {
     await driver.sleep(1000)
     
     // Now test dashboard view companies
-    await driver.get("http://localhost/multiflexi/main.php")
+    await driver.get("https://vyvojar.spoje.net/multiflexi/main.php")
     await driver.findElement(By.id("imgheight30srcimageslogsvgLogs")).click()
     await driver.findElement(By.linkText("📋 Dashboard")).click()
     await driver.findElement(By.id("viewcompaniesbutton")).click()

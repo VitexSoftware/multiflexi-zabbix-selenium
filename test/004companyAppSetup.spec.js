@@ -3,7 +3,7 @@ const { Builder, By, Key, until } = require('selenium-webdriver')
 const assert = require('assert')
 
 describe('companyappseput2', function() {
-  this.timeout(30000)
+  this.timeout(60000); // Increased timeout to 60 seconds
   let driver
   let vars
   
@@ -18,38 +18,49 @@ describe('companyappseput2', function() {
   }
   
   beforeEach(async function() {
-    driver = await new Builder().forBrowser('chrome').build()
-    vars = {}
+    console.log("Starting browser setup...");
+    driver = await new Builder().forBrowser('chrome').build();
+    vars = {};
+    console.log("Browser setup complete.");
   })
   afterEach(async function() {
     await driver.quit();
   })
   it('companyappseput2', async function() {
-    // Navigate to logout page to ensure clean login state
-    await driver.get("http://localhost/multiflexi/logout.php")
+    console.log("Navigating to logout page...");
+    await driver.get("https://vyvojar.spoje.net/multiflexi/logout.php")
     await driver.manage().window().maximize()
-    
+    console.log("Logout page loaded.");
+
     // Handle GDPR consent banner using reusable function
     const handleGdprConsent = require('./gdpr.js');
     await handleGdprConsent(driver);
-      // GDPR banner might not be present
-    
-    
+    console.log("GDPR consent handled.");
+
     // Perform login using reusable function
     const loginWithAdminCredentials = require('./login.js');
     await loginWithAdminCredentials(driver);
-    
+    console.log("Login successful.");
+
     // Wait for successful login and navigation to main page
-    await driver.wait(until.urlContains("main.php"), 10000)
-    
+    await driver.wait(until.urlContains("main.php"), 20000);
+    console.log("Main page loaded.");
+
     await driver.findElement(By.id("imgwidth30srcimagescompanysvgCompanies")).click()
+    await driver.wait(until.elementLocated(By.linkText("New Company")), 5000)
     await driver.findElement(By.linkText("New Company")).click()
-    await driver.findElement(By.id("Companyname")).click()
+    console.log("Navigated to New Company page.");
+
     await driver.findElement(By.id("Companyname")).sendKeys(randomText())
     await driver.findElement(By.id("savecompanybutton")).click()
-    await driver.sleep(1000)
+    await driver.wait(until.elementLocated(By.id("imgwidth30srcimagesappssvgApplications")), 5000)
+    console.log("Company saved.");
+
     await driver.findElement(By.id("imgwidth30srcimagesappssvgApplications")).click()
+    await driver.wait(until.elementLocated(By.linkText("🧩Register Application")), 5000)
     await driver.findElement(By.linkText("🧩Register Application")).click()
+    console.log("Navigated to Register Application page.");
+
     await driver.sleep(1000)
     await driver.wait(until.elementLocated(By.id("Configuration-tab")), 5000)
     await driver.findElement(By.id("Configuration-tab")).click()

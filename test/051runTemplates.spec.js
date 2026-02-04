@@ -15,7 +15,7 @@ describe('runTemplates', function() {
   })
   it('runTemplates', async function() {
     // Login first
-    await driver.get("http://localhost/multiflexi/logout.php")
+    await driver.get("https://vyvojar.spoje.net/multiflexi/logout.php")
     await driver.manage().window().maximize()
     
     // Handle GDPR consent banner using reusable function
@@ -31,7 +31,7 @@ describe('runTemplates', function() {
     await driver.sleep(1000)
     
     // Now test run templates
-    await driver.get("http://localhost/multiflexi/main.php")
+    await driver.get("https://vyvojar.spoje.net/multiflexi/main.php")
     
     // Wait for page to load and click on Applications menu
     const appsMenu = await driver.wait(until.elementLocated(By.id("imgwidth30srcimagesappssvgApplications")), 5000)

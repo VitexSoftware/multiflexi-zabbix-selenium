@@ -15,7 +15,7 @@ describe('deleteApplication', function() {
   })
   it('deleteApplication', async function() {
     // Go to login page and maximize
-    await driver.get("http://localhost/multiflexi/logout.php")
+    await driver.get("https://vyvojar.spoje.net/multiflexi/logout.php")
     await driver.manage().window().maximize()
 
     // Handle GDPR consent banner
@@ -30,7 +30,7 @@ describe('deleteApplication', function() {
     await driver.sleep(1000);
 
     // Now perform delete application actions
-    await driver.get("http://localhost/multiflexi/main.php")
+    await driver.get("https://vyvojar.spoje.net/multiflexi/main.php")
     await driver.manage().window().setRect({ width: 1925, height: 1033 })
     await driver.findElement(By.id("imgwidth30srcimagesappssvgApplications")).click()
     await driver.findElement(By.linkText("🧩Application list")).click()

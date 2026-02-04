@@ -15,7 +15,7 @@ describe('allApplicationJobsHistory', function() {
   })
   it('allApplicationJobsHistory', async function() {
     // Login first
-    await driver.get("http://localhost/multiflexi/logout.php")
+    await driver.get("https://vyvojar.spoje.net/multiflexi/logout.php")
     await driver.manage().window().maximize()
     
     // Handle GDPR consent banner using reusable function
@@ -30,7 +30,7 @@ describe('allApplicationJobsHistory', function() {
     await driver.sleep(1000)
     
     // Now test all application jobs history
-    await driver.get("http://localhost/multiflexi/main.php")
+    await driver.get("https://vyvojar.spoje.net/multiflexi/main.php")
     await driver.findElement(By.id("imgwidth30srcimagesappssvgApplications")).click()
     await driver.findElement(By.linkText("🧩Register Application")).click()
     

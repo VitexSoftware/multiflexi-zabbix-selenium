@@ -15,7 +15,7 @@ describe('adminActions', function() {
   })
   it('adminActions', async function() {
     // Login first
-    await driver.get("http://localhost/multiflexi/logout.php")
+    await driver.get("https://vyvojar.spoje.net/multiflexi/logout.php")
     await driver.manage().window().maximize()
     
     // Handle GDPR consent banner using reusable function
@@ -32,7 +32,7 @@ describe('adminActions', function() {
     await driver.sleep(1000)
     
     // Now test admin actions
-    await driver.get("http://localhost/multiflexi/src/main.php")
+    await driver.get("https://vyvojar.spoje.net/multiflexi/main.php")
     await driver.findElement(By.id("imgwidth30srcimagessystem-userssvgAdmin")).click()
     await driver.findElement(By.linkText("🤖 Actions")).click()
     await driver.findElement(By.id("saveactionsconfigbutton")).click()

@@ -15,7 +15,7 @@ describe('companySetup', function() {
   })
   it('companySetup', async function() {
     // Login first
-    await driver.get("http://localhost/multiflexi/logout.php")
+    await driver.get("https://vyvojar.spoje.net/multiflexi/logout.php")
     await driver.manage().window().maximize()
     
     // Handle GDPR consent banner using reusable function
@@ -32,7 +32,7 @@ describe('companySetup', function() {
     await driver.sleep(1000)
     
     // Now test company setup
-    await driver.get("http://localhost/multiflexi/main.php")
+    await driver.get("https://vyvojar.spoje.net/multiflexi/main.php")
     await driver.findElement(By.id("imgwidth30srcimagescompanysvgCompanies")).click()
     await driver.findElement(By.linkText("Listing")).click()
     await driver.findElement(By.css("tbody tr:last-child #setupcompanybutton")).click()
