@@ -12,6 +12,7 @@ Architecture: all
 Depends: ${misc:Depends},
  zabbix-agent2,
  node-mochawesome,
+ node-mochawesome-report-generator,
  mocha,
  jq
 Recommends: chromium-driver | gecko-driver
