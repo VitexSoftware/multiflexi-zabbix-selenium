@@ -172,7 +172,8 @@ systemctl start mocha-selenium-tests.timer
 - Debian/Ubuntu Linux
 - Zabbix agent2
 - Node.js with Mocha
-- node-mochawesome package
+- node-mochawesome and node-mochawesome-report-generator
+- node-selenium-webdriver
 - jq for JSON parsing
 
 ## License

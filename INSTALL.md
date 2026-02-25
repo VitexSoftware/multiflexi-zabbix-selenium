@@ -124,6 +124,8 @@ sudo apt-get purge multiflexi-zabbix-selenium
 The package automatically installs:
 - `zabbix-agent2` - Zabbix monitoring agent
 - `node-mochawesome` - Mocha reporter for JSON output
+- `node-mochawesome-report-generator` - Report generator for mochawesome
+- `node-selenium-webdriver` - Selenium WebDriver bindings for Node.js
 - `mocha` - JavaScript test framework
 - `jq` - JSON processor
 
