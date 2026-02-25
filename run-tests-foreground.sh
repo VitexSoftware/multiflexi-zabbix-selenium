@@ -27,11 +27,10 @@ echo "---"
 
 mocha $TEST_FILES \
     --reporter /usr/lib/nodejs/mochawesome \
-    --reporter-options reportDir="$REPORT_DIR",reportFilename=test-results,json=true,html=true \
+    --reporter-options reportDir="$REPORT_DIR",reportFilename=test-results,json=true,html=false \
     --timeout 60000 \
     --slow 10000 \
     --exit
 
 echo "---"
 echo "Results: $REPORT_DIR/test-results.json"
-echo "HTML report: $REPORT_DIR/test-results.html"
