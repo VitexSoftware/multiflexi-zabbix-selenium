@@ -14,10 +14,31 @@ Mocha tests → JSON report → Zabbix agent → Zabbix server
 
 ## Installation
 
-### From Debian Package
+### From VitexSoftware APT Repository (Recommended)
 
 ```bash
-sudo dpkg -i multiflexi-zabbix-selenium_1.0.0_all.deb
+# Import GPG key
+sudo curl -fsSL http://repo.vitexsoftware.com/KEY.gpg \
+  -o /usr/share/keyrings/vitexsoftware-archive-keyring.gpg
+
+# Add repository (replace DISTRO with your distribution codename, e.g. trixie, forky, bookworm)
+sudo tee /etc/apt/sources.list.d/vitexsoftware.sources <<EOF
+Types: deb
+URIs: http://repo.vitexsoftware.com
+Suites: DISTRO
+Components: main
+Signed-By: /usr/share/keyrings/vitexsoftware-archive-keyring.gpg
+EOF
+
+# Install
+sudo apt update
+sudo apt install multiflexi-zabbix-selenium
+```
+
+### From Local Debian Package
+
+```bash
+sudo dpkg -i multiflexi-zabbix-selenium_*.deb
 sudo apt-get install -f  # Install dependencies
 ```
 
@@ -139,7 +160,7 @@ systemctl start mocha-selenium-tests.timer
 
 - `/usr/bin/zabbix-mocha-stats.sh` - Metrics extraction script
 - `/usr/bin/multiflexi-mocha-test.sh` - Test runner used by the service
-- `/etc/zabbix/zabbix_agent2.d/mocha.conf` - Zabbix UserParameters
+- `/etc/zabbix/zabbix_agent2.d/multiflexi-mocha.conf` - Zabbix UserParameters
 - `/etc/default/multiflexi-mocha` - Environment file (e.g., `TESTS_DIR`)
 - `/etc/systemd/system/mocha-selenium-tests.service` - Test execution service
 - `/etc/systemd/system/mocha-selenium-tests.timer` - Periodic execution timer

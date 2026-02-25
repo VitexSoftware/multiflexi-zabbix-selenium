@@ -1,22 +1,39 @@
 # Installation Guide
 
-## Package Information
-
-**Package**: `multiflexi-zabbix-selenium_1.0.0_all.deb`  
-**Location**: `/home/vitex/Projects/Multi/multiflexi-zabbix-selenium_1.0.0_all.deb`
-
-## Quick Install
+## From VitexSoftware APT Repository (Recommended)
 
 ```bash
-cd /home/vitex/Projects/Multi
-sudo dpkg -i multiflexi-zabbix-selenium_1.0.0_all.deb
-sudo apt-get install -f
+# Import GPG key
+sudo curl -fsSL http://repo.vitexsoftware.com/KEY.gpg \
+  -o /usr/share/keyrings/vitexsoftware-archive-keyring.gpg
+
+# Add repository (replace DISTRO with your distribution codename, e.g. trixie, forky, bookworm)
+sudo tee /etc/apt/sources.list.d/vitexsoftware.sources <<EOF
+Types: deb
+URIs: http://repo.vitexsoftware.com
+Suites: DISTRO
+Components: main
+Signed-By: /usr/share/keyrings/vitexsoftware-archive-keyring.gpg
+EOF
+
+# Install
+sudo apt update
+sudo apt install multiflexi-zabbix-selenium
+```
+
+All dependencies will be resolved automatically.
+
+## From Local Debian Package
+
+```bash
+sudo dpkg -i multiflexi-zabbix-selenium_*.deb
+sudo apt-get install -f  # Install dependencies
 ```
 
 ## What Gets Installed
 
 ### Configuration Files
-- `/etc/zabbix/zabbix_agent2.d/mocha.conf` - Zabbix UserParameters
+- `/etc/zabbix/zabbix_agent2.d/multiflexi-mocha.conf` - Zabbix UserParameters
 - `/etc/systemd/system/mocha-selenium-tests.service` - Test execution service
 - `/etc/systemd/system/mocha-selenium-tests.timer` - Periodic timer
 - `/etc/default/multiflexi-mocha` - Environment (e.g., `TESTS_DIR`)

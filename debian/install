@@ -1,6 +1,6 @@
 zabbix-mocha-stats.sh usr/bin/
 multiflexi-mocha-test.sh usr/bin/
-multiflexi-mocha.default etc/default/multiflexi-mocha
+multiflexi-mocha etc/default/
 multiflexi-mocha.conf etc/zabbix/zabbix_agent2.d/
 mocha-selenium-tests.service etc/systemd/system/
 mocha-selenium-tests.timer etc/systemd/system/

@@ -18,7 +18,7 @@ systemd timer → Mocha tests → mochawesome JSON report → Zabbix UserParamet
 
 1. **zabbix-mocha-stats.sh**: Bash script that extracts metrics from mochawesome JSON using `jq`. Called by Zabbix agent via UserParameter.
 
-2. **mocha.conf**: Zabbix agent2 UserParameter configuration that maps `mocha.tests[*]` keys to the extraction script.
+2. **multiflexi-mocha.conf**: Zabbix agent2 UserParameter configuration that maps `mocha.tests[*]` keys to the extraction script.
 
 3. **multiflexi-mocha-test.sh**: Test runner script invoked by the systemd service. Honors `TESTS_DIR` to locate tests.
 
