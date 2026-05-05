@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="addon">
+  <id>cz.vitexsoftware.multiflexi_zabbix_selenium</id>
+  <icon type="stock">multiflexi-zabbix-selenium</icon>
+  <metadata_license>MIT</metadata_license>
+  <project_license>MIT</project_license>
+  <name>MultiFlexi Zabbix Selenium</name>
+  <summary>Zabbix integration for Selenium test monitoring via Mocha</summary>
+  <description>
+    <p>
+      Provides a complete integration between Mocha test framework and Zabbix monitoring system. Tests are executed periodically via systemd timer and results are exposed to Zabbix through custom UserParameters. Includes Zabbix agent2 UserParameter for reading Mocha JSON reports and pre-configured Zabbix template for test monitoring.
+    </p>
+  </description>
+  <categories>
+    <category>System</category>
+  </categories>
+  <url type="homepage">https://github.com/VitexSoftware/multiflexi-zabbix-selenium</url>
+  <url type="bugtracker">https://github.com/VitexSoftware/multiflexi-zabbix-selenium/issues</url>
+  <developer id="cz.vitexsoftware">
+    <name>VitexSoftware</name>
+  </developer>
+  <content_rating type="oars-1.1"/>
+</component>
